@@ -1,51 +1,98 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Feathery Friend Toys – Safe, handmade toys for parrots and birds. Natural materials, colorful fun!">
+  <title>Feathery Friend Toys</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background: #fefdfb; color: #333; }
+    header { background: #ffda77; padding: 1rem 2rem; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    header p { font-size: 1.1rem; color: #4d4d4d; }
 
-<html>
-    <head>
-        <meta charset="utf-8">
+    nav { background: #fff3c7; padding: 1rem; display: flex; justify-content: center; gap: 1.5rem; border-bottom: 2px solid #ffe9a0; }
+    nav a { color: #444; text-decoration: none; font-weight: bold; }
+    nav a:hover { text-decoration: underline; }
 
-        <title>Blank template</title>
-        <style>
-            h2 {
-                color: rgb(0,100,100)
-            }
-            .monospace{
-                font-family: monospace
-            {
-            .serif{
-                font-family: serif
-            }
-            #heading{
-                text-align: center
-        </style>
-        <!-- Load external CSS styles -->
-        <link rel="stylesheet" href="styles.css">
+    .container { max-width: 1000px; margin: auto; padding: 2rem 1rem; }
+    .section-title { text-align: center; font-size: 2rem; margin-bottom: 1rem; color: #d49b00; }
 
-    </head>
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+    .product-card { background: white; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); padding: 1rem; text-align: center; transition: transform 0.2s; }
+    .product-card:hover { transform: translateY(-5px); }
+    .product-card img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; }
+    .product-card h3 { margin-top: 0.8rem; font-size: 1.3rem; color: #333; }
+    .product-card p { font-size: 0.95rem; color: #666; margin: 0.5rem 0; }
+    .product-card a { background: #ffbf00; color: white; text-decoration: none; padding: 0.6rem 1rem; border-radius: 6px; display: inline-block; margin-top: 0.5rem; }
+    .product-card a:hover { background: #ffaa00; }
 
-    <body>
-        <h1 id="heading">Feathery Friend Toys</h1>
-        <h2>What are the toys made of?</h2>
-        <ul>
-            <p>Feathery friend toys are made of <strong class="monospace">bird friendly</strong> and <strong class="monospace">natural products</strong>.</p>
-            <li>Cork</li>
-            <li>Untreated Wood</li>
-            <li>Shreddable Paper</li>
-            <li>Card Board</li>
-            <li>Paper Straws</li>
-            <li>Twine</li>
-            <li>Wooden Beads</li>
-            <li>Popsicle Sticks</li>
-            <p> Feathery Friend's offers a wide range of toys to entertain you parrot for hours to come. From <em class="serif"> foraging</em> to <em class="serif"> interactive</em> toys <strong class="monospace">we have them all.</strong></p>    
-            <img src="https://static.wixstatic.com/media/aa1884_5ce5cc947dac47c08afd8d0f2b5cede4~mv2.png/v1/fill/w_225,h_225,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aa1884_5ce5cc947dac47c08afd8d0f2b5cede4~mv2.png" alt="Beak Buster Toy">
-            <img src="https://static.wixstatic.com/media/aa1884_afd66fa459e546f4b734ff52eeafa33b~mv2.png/v1/fill/w_225,h_225,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aa1884_afd66fa459e546f4b734ff52eeafa33b~mv2.png" alt="Floppy Frank Toy">
-            <img src="https://static.wixstatic.com/media/aa1884_08ffeabf68c140fc88eea714a5e9a0aa~mv2.png/v1/fill/w_225,h_225,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aa1884_08ffeabf68c140fc88eea714a5e9a0aa~mv2.png" alt="Razzle Dazzle Toy">
-            <img src="https://static.wixstatic.com/media/aa1884_e0ab1d99e4a94463a50fc265e8cfe6d2~mv2.png/v1/fill/w_225,h_225,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aa1884_e0ab1d99e4a94463a50fc265e8cfe6d2~mv2.png" alt="Twinkle Chew toy">
-            <img src="https://static.wixstatic.com/media/aa1884_7c316da98acd4e20a8f89a4664ac5211~mv2.png/v1/fill/w_225,h_225,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aa1884_7c316da98acd4e20a8f89a4664ac5211~mv2.png" alt="Stiff Stckman Toy">
-            <h2>Buy these toys on <a href="https://www.parrotrescuesouthafrica.com/shop">Cheeky Beaks</a></h2>
-            <!-- Load external JavaScript -->
-        <script src="scripts.js"></script>
-        
-    </body>
+    footer { background: #ffda77; text-align: center; padding: 1rem; margin-top: 2rem; color: #333; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Feathery Friend Toys</h1>
+    <p>Handmade, natural toys to keep your birds happy, active, and safe</p>
+  </header>
 
+  <nav>
+    <a href="#toys">Toys</a>
+    <a href="#materials">Materials</a>
+    <a href="#rescue">Cheeky Beaks</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main class="container">
+    <section id="toys">
+      <h2 class="section-title">Our Toys</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://via.placeholder.com/250x200?text=Beak+Buster" alt="Beak Buster Toy">
+          <h3>Beak Buster</h3>
+          <p>A crunchy, chewy toy perfect for parrots that love to destroy.</p>
+          <a href="#contact">Buy Now</a>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/250x200?text=Floppy+Frank" alt="Floppy Frank Toy">
+          <h3>Floppy Frank</h3>
+          <p>Wobbly and fun with hanging paper and soft beads.</p>
+          <a href="#contact">Buy Now</a>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/250x200?text=Razzle+Dazzle" alt="Razzle Dazzle Toy">
+          <h3>Razzle Dazzle</h3>
+          <p>Bright, multicolored toy with layers of shreddables.</p>
+          <a href="#contact">Buy Now</a>
+        </div>
+        <div class="product-card">
+          <img src="https://via.placeholder.com/250x200?text=Stickman" alt="Stiff Stickman Toy">
+          <h3>Stiff Stickman</h3>
+          <p>A tough, straight toy with charm. Bell optional!</p>
+          <a href="#contact">Buy Now</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="materials" style="margin-top: 3rem;">
+      <h2 class="section-title">What We Use</h2>
+      <p style="text-align: center; max-width: 700px; margin: auto;">We use bird-safe, eco-friendly materials like cork, untreated wood, paper straws, cardboard, natural twine, wooden beads, popsicle sticks, and shredded paper to ensure your feathery friends are entertained and safe.</p>
+    </section>
+
+    <section id="rescue" style="margin-top: 3rem;">
+      <h2 class="section-title">Supporting Cheeky Beaks</h2>
+      <p style="text-align: center; max-width: 700px; margin: auto;">We proudly donate toys to <a href="https://www.cheekybeaks.org" target="_blank">Cheeky Beaks Parrot Rescue</a>. They’ve unboxed and tested our toys with their rescues — check them out on YouTube for a firsthand look!</p>
+    </section>
+
+    <section id="contact" style="margin-top: 3rem;">
+      <h2 class="section-title">Contact & Orders</h2>
+      <p style="text-align: center; max-width: 700px; margin: auto;">To order, email us at <strong>featheryfriendtoys@gmail.com</strong> or message us on Instagram <strong>@featheryfriendtoys</strong>. We deliver across South Africa and can customize toys on request!</p>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Feathery Friend Toys. Handmade with love in South Africa.
+  </footer>
+</body>
 </html>
