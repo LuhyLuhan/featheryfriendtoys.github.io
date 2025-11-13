@@ -247,13 +247,29 @@
 </section>
 
 <script>
+  const BLACK_FRIDAY = true; // set to false when Black Friday is over
+
   const cart = [];
 
   function addToCart() {
     const toySelect = document.getElementById('toySelect');
     const quantityInput = document.getElementById('quantity');
     const toyName = toySelect.value;
-    const price = parseFloat(toySelect.selectedOptions[0].dataset.price || 0);
+    const basePrice = parseFloat(toySelect.selectedOptions[0].dataset.price || 0);
+
+    // Add per-toy discount in percent
+    const toyDiscounts = {
+      "Beak Buster": 10,     // 10% discount
+      "Floppy Frank": 5,     // 5% discount
+      "Crazy Carousal": 15,  // 15% discount
+      "Stiff Stickman": 0,   // no discount
+      "Custom Toy": 0
+    };
+
+    let discount = toyDiscounts[toyName] || 0;
+    if (BLACK_FRIDAY) discount += 20; // extra 20% off for Black Friday
+
+    const discountedPrice = (basePrice * (1 - discount / 100)).toFixed(2);
     const quantity = parseInt(quantityInput.value);
 
     if (!toyName) return alert('Please select a toy.');
@@ -262,7 +278,7 @@
     if (existing) {
       existing.qty += quantity;
     } else {
-      cart.push({ name: toyName, price, qty: quantity });
+      cart.push({ name: toyName, price: parseFloat(discountedPrice), qty: quantity, discount });
     }
 
     renderCart();
@@ -289,14 +305,15 @@
           <tr>
             <td style="padding:0.5rem;">${item.name}</td>
             <td>${item.qty}</td>
-            <td>R${item.price * item.qty}</td>
+            <td>R${itemTotal.toFixed(2)} ${item.discount > 0 ? `(Discounted)` : ''}</td>
             <td><button type="button" onclick="removeItem(${i})" style="background:none;border:none;color:red;cursor:pointer;">✖</button></td>
           </tr>
         `;
       });
     }
-    totalEl.textContent = 'Total: R' + total;
-    document.getElementById('cartData').value = cart.map(i => `${i.qty}x ${i.name} (R${i.price} ea)`).join(', ');
+
+    totalEl.textContent = 'Total: R' + total.toFixed(2);
+    document.getElementById('cartData').value = cart.map(i => `${i.qty}x ${i.name} (R${i.price} ea, ${i.discount}% off)`).join(', ');
   }
 </script>
 
