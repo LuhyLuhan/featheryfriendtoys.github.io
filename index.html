@@ -194,19 +194,112 @@
     </section>
 
     <!-- Contact -->
-    <section id="contact" style="margin-top: 4rem;">
-      <h2 class="section-title">Contact & Orders</h2>
-      <p>To order, fill out the form below or email us at <strong>featheryfriendtoys@gmail.com</strong>.  
-      We deliver across South Africa and can customize toys on request!</p>
+<!-- Contact & Orders -->
+<section id="contact" style="margin-top: 4rem;">
+  <h2 class="section-title">Order & Request Invoice</h2>
+  <p>Choose your toys below and add them to your cart.  
+  When you’re ready, click <strong>“Request Invoice”</strong> to send us your order details — we’ll email you an invoice and confirm delivery options.</p>
 
-      <form action="https://formspree.io/f/xrbrbkno" method="POST">
-        <input type="text" name="name" placeholder="Your Name" required />
-        <input type="email" name="_replyto" placeholder="Your Email" required />
-        <textarea name="message" rows="5" placeholder="What would you like to order or ask?" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-      <p style="font-size:0.9rem; text-align:center; color:#666;">(Form powered by Formspree – free for small sites)</p>
-    </section>
+  <!-- Product selection -->
+  <div id="shop" style="max-width:700px; margin:2rem auto; text-align:center;">
+    <div>
+      <label for="toySelect" style="font-weight:600;">Select Toy:</label><br>
+      <select id="toySelect" style="padding:0.5rem; width:80%; margin:0.5rem 0;">
+        <option value="">-- Choose a Toy --</option>
+        <option value="Beak Buster" data-price="80">Beak Buster – R80</option>
+        <option value="Floppy Frank" data-price="70">Floppy Frank – R70</option>
+        <option value="Crazy Carousal" data-price="85">Crazy Carousal – R85</option>
+        <option value="Stiff Stickman" data-price="75">Stiff Stickman – R75</option>
+        <option value="Custom Toy" data-price="0">Custom Toy (Price on Request)</option>
+      </select><br>
+      <label for="quantity" style="font-weight:600;">Quantity:</label>
+      <input type="number" id="quantity" value="1" min="1" style="padding:0.5rem; width:80px; margin:0.5rem;">
+      <button type="button" onclick="addToCart()" style="background:#ffbf00;color:white;border:none;padding:0.6rem 1rem;border-radius:6px;cursor:pointer;">Add to Cart</button>
+    </div>
+
+    <h3 style="margin-top:2rem;color:#d49b00;">Your Cart</h3>
+    <table id="cartTable" style="width:100%; margin-top:1rem; border-collapse:collapse;">
+      <thead>
+        <tr style="background:#fff6d1;">
+          <th style="padding:0.5rem;">Item</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="cartBody">
+        <tr><td colspan="4" style="padding:1rem;color:#777;">Your cart is empty</td></tr>
+      </tbody>
+    </table>
+    <p id="total" style="margin-top:1rem;font-weight:600;">Total: R0</p>
+  </div>
+
+  <!-- Contact & invoice request -->
+  <form id="orderForm" action="https://formspree.io/f/xrbrbkno" method="POST">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="_replyto" placeholder="Your Email" required />
+    <textarea name="message" id="orderMessage" rows="5" placeholder="Any special requests, delivery info, or custom notes?" required></textarea>
+    <input type="hidden" name="cart" id="cartData" />
+    <button type="submit">Request Invoice</button>
+  </form>
+
+  <p style="font-size:0.9rem; text-align:center; color:#666;">(Form powered by Formspree – we’ll email your invoice within 24 hours)</p>
+</section>
+
+<script>
+  const cart = [];
+
+  function addToCart() {
+    const toySelect = document.getElementById('toySelect');
+    const quantityInput = document.getElementById('quantity');
+    const toyName = toySelect.value;
+    const price = parseFloat(toySelect.selectedOptions[0].dataset.price || 0);
+    const quantity = parseInt(quantityInput.value);
+
+    if (!toyName) return alert('Please select a toy.');
+
+    const existing = cart.find(item => item.name === toyName);
+    if (existing) {
+      existing.qty += quantity;
+    } else {
+      cart.push({ name: toyName, price, qty: quantity });
+    }
+
+    renderCart();
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    renderCart();
+  }
+
+  function renderCart() {
+    const cartBody = document.getElementById('cartBody');
+    const totalEl = document.getElementById('total');
+    cartBody.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartBody.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:#777;">Your cart is empty</td></tr>';
+    } else {
+      cart.forEach((item, i) => {
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+        cartBody.innerHTML += `
+          <tr>
+            <td style="padding:0.5rem;">${item.name}</td>
+            <td>${item.qty}</td>
+            <td>R${item.price * item.qty}</td>
+            <td><button type="button" onclick="removeItem(${i})" style="background:none;border:none;color:red;cursor:pointer;">✖</button></td>
+          </tr>
+        `;
+      });
+    }
+    totalEl.textContent = 'Total: R' + total;
+    document.getElementById('cartData').value = cart.map(i => `${i.qty}x ${i.name} (R${i.price} ea)`).join(', ');
+  }
+</script>
+
   </main>
 
   <footer>
