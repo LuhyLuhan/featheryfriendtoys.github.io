@@ -268,74 +268,66 @@
 </section>
 
 <script>
-  const BLACK_FRIDAY = true; // set to false when Black Friday is over
+const cart = [];
+const BLACK_FRIDAY = true; // set to false to disable
 
-  const cart = [];
+function addToCart() {
+  const toySelect = document.getElementById('toySelect');
+  const quantityInput = document.getElementById('quantity');
+  const toyName = toySelect.value;
+  let price = parseFloat(toySelect.selectedOptions[0].dataset.price || 0);
+  const quantity = parseInt(quantityInput.value);
 
-  function addToCart() {
-    const toySelect = document.getElementById('toySelect');
-    const quantityInput = document.getElementById('quantity');
-    const toyName = toySelect.value;
-    const basePrice = parseFloat(toySelect.selectedOptions[0].dataset.price || 0);
+  if (!toyName) return alert('Please select a toy.');
 
-    // Add per-toy discount in percent
-    const toyDiscounts = {
-      "Beak Buster": 10,     // 10% discount
-      "Floppy Frank": 5,     // 5% discount
-      "Crazy Carousal": 15,  // 15% discount
-      "Stiff Stickman": 0,   // no discount
-      "Custom Toy": 0
-    };
-
-    let discount = toyDiscounts[toyName] || 0;
-    if (BLACK_FRIDAY) discount += 20; // extra 20% off for Black Friday
-
-    const discountedPrice = (basePrice * (1 - discount / 100)).toFixed(2);
-    const quantity = parseInt(quantityInput.value);
-
-    if (!toyName) return alert('Please select a toy.');
-
-    const existing = cart.find(item => item.name === toyName);
-    if (existing) {
-      existing.qty += quantity;
-    } else {
-      cart.push({ name: toyName, price: parseFloat(discountedPrice), qty: quantity, discount });
-    }
-
-    renderCart();
+  if (BLACK_FRIDAY && price > 0) {
+    price = (price * 0.8).toFixed(2); // 20% off
   }
 
-  function removeItem(index) {
-    cart.splice(index, 1);
-    renderCart();
+  const existing = cart.find(item => item.name === toyName);
+  if (existing) {
+    existing.qty += quantity;
+  } else {
+    cart.push({ name: toyName, originalPrice: parseFloat(toySelect.selectedOptions[0].dataset.price || 0), price: parseFloat(price), qty: quantity });
   }
 
-  function renderCart() {
-    const cartBody = document.getElementById('cartBody');
-    const totalEl = document.getElementById('total');
-    cartBody.innerHTML = '';
-    let total = 0;
+  renderCart();
+}
 
-    if (cart.length === 0) {
-      cartBody.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:#777;">Your cart is empty</td></tr>';
-    } else {
-      cart.forEach((item, i) => {
-        const itemTotal = item.price * item.qty;
-        total += itemTotal;
-        cartBody.innerHTML += `
-          <tr>
-            <td style="padding:0.5rem;">${item.name}</td>
-            <td>${item.qty}</td>
-            <td>R${itemTotal.toFixed(2)} ${item.discount > 0 ? `(Discounted)` : ''}</td>
-            <td><button type="button" onclick="removeItem(${i})" style="background:none;border:none;color:red;cursor:pointer;">✖</button></td>
-          </tr>
-        `;
-      });
-    }
+function removeItem(index) {
+  cart.splice(index, 1);
+  renderCart();
+}
 
-    totalEl.textContent = 'Total: R' + total.toFixed(2);
-    document.getElementById('cartData').value = cart.map(i => `${i.qty}x ${i.name} (R${i.price} ea, ${i.discount}% off)`).join(', ');
+function renderCart() {
+  const cartBody = document.getElementById('cartBody');
+  const totalEl = document.getElementById('total');
+  cartBody.innerHTML = '';
+  let total = 0;
+
+  if (cart.length === 0) {
+    cartBody.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:#777;">Your cart is empty</td></tr>';
+  } else {
+    cart.forEach((item, i) => {
+      const itemTotal = item.price * item.qty;
+      total += itemTotal;
+      const originalPriceHTML = BLACK_FRIDAY && item.originalPrice > 0
+        ? `<span style="text-decoration:line-through;color:#999;">R${item.originalPrice * item.qty}</span> `
+        : '';
+      cartBody.innerHTML += `
+        <tr>
+          <td style="padding:0.5rem;">${item.name}</td>
+          <td>${item.qty}</td>
+          <td>${originalPriceHTML}R${item.price * item.qty}</td>
+          <td><button type="button" onclick="removeItem(${i})" style="background:none;border:none;color:red;cursor:pointer;">✖</button></td>
+        </tr>
+      `;
+    });
   }
+  totalEl.textContent = 'Total: R' + total.toFixed(2);
+  document.getElementById('cartData').value = cart.map(i => `${i.qty}x ${i.name} (R${i.price} ea)`).join(', ');
+}
+
 </script>
 
   </main>
